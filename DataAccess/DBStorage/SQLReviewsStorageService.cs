@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.DBStorage
 {
+    // if the FK constraint is not met, SQL exception is thrown 
+    // then when this happens, custom KeyNotFoundException is thrown
+    // The book for which you try adding the review does not exist
     public class SQLReviewsStorageService
     {
         private SqlConnection sqlConn = SQLConnectionService.GetService().Connection;
@@ -16,7 +19,6 @@ namespace DataAccess.DBStorage
             string query = $"INSERT INTO BookReviews(isbn, reviewscore, reviewtext)" +
                $" VALUES (@isbn, @reviewscore, @reviewtext)"; 
               
-
             SqlParameter[] sqlparams = new SqlParameter[3];
             sqlparams[0] = new SqlParameter("@isbn", sqlBookReview.ISBN);
             sqlparams[1] = new SqlParameter("@reviewscore", sqlBookReview.ReviewScore);
@@ -37,7 +39,7 @@ namespace DataAccess.DBStorage
                 }
                 catch (SqlException ex)
                 {
-                    throw new KeyNotFoundException("The book which you try adding the review does not exist");
+                    throw new KeyNotFoundException("The book for which you try adding the review does not exist");
                 }
 
             }
