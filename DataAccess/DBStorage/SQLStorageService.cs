@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Reflection.Metadata.BlobBuilder;
@@ -12,7 +13,6 @@ namespace BusinessLogic.DBStorage
     public class SQLStorageService
     {
         private SqlConnection sqlConn = SQLConnectionService.GetService().Connection;
-
 
         public List<SQLBook> GetAllBooks()
         {
@@ -39,7 +39,10 @@ namespace BusinessLogic.DBStorage
 
         }
 
-        // returns null if the book is not found in the db
+        /*
+         * throws KeyNotFoundException if the book with that ISBN does not 
+         * exist in the DB
+         * */
         public SQLBook GetBookByISBN(string isbn)
         {
             string query = $"SELECT * FROM Books WHERE isbn = @isbn";
@@ -120,7 +123,6 @@ namespace BusinessLogic.DBStorage
                 " SET title = @title, author = @author, publisheddate = @publisheddate,  reviewScore = @reviewscore" +
                 $" WHERE isbn = @isbn";
 
-
             SqlParameter[] sqlparams = new SqlParameter[5];
             sqlparams[0] = new SqlParameter("@title", bookToUpdate.Title);
             sqlparams[1] = new SqlParameter("@author", bookToUpdate.Author);
@@ -143,8 +145,7 @@ namespace BusinessLogic.DBStorage
 
         public void DeleteBook(string isbn)
         {
-            string query = $"DELETE FROM Books" +
-                $" WHERE isbn = @isbn";
+            string query = $"DELETE FROM Books WHERE isbn = @isbn";
 
             SqlParameter sqlParam = new SqlParameter("@isbn", isbn);
             using (SqlCommand command = new SqlCommand(query, sqlConn))

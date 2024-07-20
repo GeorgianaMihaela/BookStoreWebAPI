@@ -69,6 +69,7 @@ namespace WebAPIsNoDB.Controllers
         {
             Book book = bookService.DeleteBook(isbn);
 
+            // need to return the book which we just deleted
             BookDTO bookDTO = bookMapper.MapBookToBookDTO(book);
 
             return bookDTO;
