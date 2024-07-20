@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Books
+namespace DataAccess.DTOs
 {
-    public class BookReview
+    public class SqlBookReview
     {
-        public int BookId { get; set; }
         public string ISBN { get; set; }
         public float ReviewScore { get; set; }
+
         public string ReviewText { get; set; }
+
     }
 }

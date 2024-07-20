@@ -1,5 +1,7 @@
 ﻿using BusinessLogic.DBStorage;
 using BusinessLogic.Mappers;
+using DataAccess.DBStorage;
+using DataAccess.DTOs;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -14,17 +16,18 @@ namespace BusinessLogic.Books
 {
     public class BookService
     {
-        private SQLStorageService sqlStorageService = new SQLStorageService();
+        private SQLBooksStorageService sqlBooksStorageService = new SQLBooksStorageService();
+        private SQLReviewsStorageService sqlReviewsStorageService = new SQLReviewsStorageService();
+
         private BookMapper bookMapper = new BookMapper();
+        private ReviewMapper reviewMapper = new ReviewMapper();
 
         public Book InsertBook(Book book)
         {
             
-            // var books = sqlStorageService.GetAllBooks(); 
             var sqlBook = bookMapper.MapBookToSQLBook(book);
 
-
-            sqlStorageService.InsertBook(sqlBook);
+            sqlBooksStorageService.InsertBook(sqlBook);
 
             return book;
 
@@ -33,7 +36,7 @@ namespace BusinessLogic.Books
         public List<Book> GetBooks()
         {
            
-            List<SQLBook> sqlBooks = sqlStorageService.GetAllBooks();
+            List<SQLBook> sqlBooks = sqlBooksStorageService.GetAllBooks();
 
             // convert List of sql books to list of books and return it
             return bookMapper.MapListSqlBookToListBook(sqlBooks);
@@ -51,16 +54,17 @@ namespace BusinessLogic.Books
             bookToUpdate.ReviewScore = updatedBook.ReviewScore;
             bookToUpdate.PublishedDate = updatedBook.PublishedDate;
 
-            sqlStorageService.UpdateBook(bookToUpdate);
+            sqlBooksStorageService.UpdateBook(bookToUpdate);
 
             return bookMapper.MapSqlBookToBook(bookToUpdate);
         }
 
         public Book DeleteBook(string isbn)
         {
+            // check if the book which we want to delete exists in the DB
             Book deletedBook = GetBookByISBN(isbn); 
 
-            sqlStorageService.DeleteBook(isbn);
+            sqlBooksStorageService.DeleteBook(isbn);
 
             return deletedBook; 
             
@@ -68,14 +72,13 @@ namespace BusinessLogic.Books
 
         private SQLBook GetSqlBookByISBN(string isbn)
         {
-
-            return sqlStorageService.GetBookByISBN(isbn);
+            return sqlBooksStorageService.GetBookByISBN(isbn);
         }
 
         public Book GetBookByISBN(string isbn)
         {
 
-            SQLBook sqlBook = sqlStorageService.GetBookByISBN(isbn);
+            SQLBook sqlBook = sqlBooksStorageService.GetBookByISBN(isbn);
 
             Book book = bookMapper.MapSqlBookToBook(sqlBook);
 
@@ -85,9 +88,8 @@ namespace BusinessLogic.Books
 
         public void AddBookReview(BookReview bookReview)
         {
-            Console.WriteLine();
+            SqlBookReview sqlBookReview = reviewMapper.MapBookReviewToSqlBookReview(bookReview);
+            sqlReviewsStorageService.InserBookReview(sqlBookReview); 
         }
-
-        
     }
 }

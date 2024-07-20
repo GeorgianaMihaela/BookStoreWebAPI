@@ -1,4 +1,5 @@
 ﻿using DataAccess.DBStorage;
+using DataAccess.DTOs;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using static System.Reflection.Metadata.BlobBuilder;
 
 namespace BusinessLogic.DBStorage
 {
-    public class SQLStorageService
+    public class SQLBooksStorageService
     {
         private SqlConnection sqlConn = SQLConnectionService.GetService().Connection;
 
@@ -160,5 +161,7 @@ namespace BusinessLogic.DBStorage
                 reader.Close();
             }
         }
+
+        
     }
 }
