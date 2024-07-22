@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.DBStorage;
 using BusinessLogic.Mappers;
+using DataAccess.DataModels;
 using DataAccess.DBStorage;
 using DataAccess.DTOs;
 using Microsoft.Data.SqlClient;
@@ -86,10 +87,17 @@ namespace BusinessLogic.Books
 
         }
 
-        public void AddBookReview(BookReview bookReview)
+        public void AddBookReview(string isbn, BookReview bookReview)
         {
             SqlBookReview sqlBookReview = reviewMapper.MapBookReviewToSqlBookReview(bookReview);
-            sqlReviewsStorageService.InserBookReview(sqlBookReview); 
+            sqlReviewsStorageService.InserBookReview(isbn, sqlBookReview); 
+        }
+
+        public List<BookCompositeReview> GetReviewsByISBN(string isbn)
+        {
+            List<BookCompositeReview> reviews = reviewMapper.ConvertSQLReviewToBookCompositeReview(sqlReviewsStorageService.GetReviewsByISBN(isbn));
+
+            return reviews; 
         }
     }
 }

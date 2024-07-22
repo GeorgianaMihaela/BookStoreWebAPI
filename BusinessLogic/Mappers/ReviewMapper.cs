@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Books;
+using DataAccess.DataModels;
 using DataAccess.DTOs;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,29 @@ namespace BusinessLogic.Mappers
         {
             SqlBookReview sqlBookReview = new SqlBookReview
             {
-                ISBN = bookReview.ISBN,
                 ReviewScore = bookReview.ReviewScore,
                 ReviewText = bookReview.ReviewText
             };
             return sqlBookReview;
+        }
+
+        public List<BookCompositeReview> ConvertSQLReviewToBookCompositeReview(List<SQLCompositeReview> sQLCompositeReviews)
+        {
+            List<BookCompositeReview> joinedReviews = new List<BookCompositeReview>();
+
+            foreach (SQLCompositeReview scr in sQLCompositeReviews)
+            {
+                BookCompositeReview bookCompositeReview = new BookCompositeReview
+                {
+                    ISBN = scr.ISBN,
+                    Title = scr.Title,
+                    ReviewScore = scr.ReviewScore,
+                    ReviewText = scr.ReviewText
+                }; 
+
+                joinedReviews.Add(bookCompositeReview);
+            }
+            return joinedReviews;
         }
     }
 }

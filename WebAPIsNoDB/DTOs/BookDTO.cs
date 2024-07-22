@@ -25,6 +25,7 @@ namespace WebApp.DTOs
         public DateTime PublishedDate { get; set; }
 
         [JsonPropertyName("reviewscore")]
+        [Required]
         public float ReviewScore { get; set; }
 
         public override string ToString()

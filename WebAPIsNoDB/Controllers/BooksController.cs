@@ -18,9 +18,9 @@ namespace WebAPIsNoDB.Controllers
         [HttpGet]
         public List<BookDTO> Get()
         {
-            var books = bookService.GetBooks();
+            List<Book> books = bookService.GetBooks();
 
-            var booksDTO = bookMapper.GetBooksDTOList(books);
+            List<BookDTO> booksDTO = bookMapper.GetBooksDTOList(books);
 
             return booksDTO;
         }
@@ -78,14 +78,23 @@ namespace WebAPIsNoDB.Controllers
 
         [HttpPost]
         [Consumes("application/json")]
-        [Route("review")]
-        public void PostReview([FromBody] BookReviewDTO bookReviewDTO)
+        [Route("{isbn}/review")]
+        public void PostReview([FromRoute] string isbn, [FromBody] BookReviewDTO bookReviewDTO)
         {
             BookReview bookReview = bookMapper.MapBookReviewDTOToBookReview(bookReviewDTO);
-
-            bookService.AddBookReview(bookReview);
+            bookService.AddBookReview(isbn, bookReview);
         }
 
+        [HttpGet]
+        [Route("{isbn}/reviews")]
+        public List<ReviewReturnedDTO> GetReviews([FromRoute] string isbn)
+        {
+           List<BookCompositeReview> bookReviews = bookService.GetReviewsByISBN(isbn);
+
+           List<ReviewReturnedDTO> bookReviewDTOs = bookMapper.ConvertBookReviewsToReviewsDTO(bookReviews); 
+
+            return bookReviewDTOs;
+        }
 
     }
 }

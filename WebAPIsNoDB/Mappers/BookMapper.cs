@@ -59,14 +59,31 @@ namespace WebAPIsNoDB.Mappers
             };
         }
 
-        internal BookReview MapBookReviewDTOToBookReview(BookReviewDTO bookReviewDTO)
+        public BookReview MapBookReviewDTOToBookReview(BookReviewDTO bookReviewDTO)
         {
             return new BookReview
             {
-                ISBN = bookReviewDTO.ISBN,
-                ReviewScore = float.Parse(bookReviewDTO.ReviewScore),
+                ReviewScore = bookReviewDTO.ReviewScore,
                 ReviewText = bookReviewDTO.ReviewText
             };
+        }
+
+        public List<ReviewReturnedDTO> ConvertBookReviewsToReviewsDTO(List<BookCompositeReview> bookReviews)
+        {
+            List<ReviewReturnedDTO> bookReviewsDTOs = new List<ReviewReturnedDTO>();
+
+            foreach(BookCompositeReview br in bookReviews)
+            {
+                ReviewReturnedDTO brdto = new ReviewReturnedDTO
+                {
+                    ReviewScore = br.ReviewScore,
+                    ReviewText = br.ReviewText, 
+                    ISBN = br.ISBN, 
+                    Title = br.Title
+                }; 
+                bookReviewsDTOs.Add(brdto);
+            }
+            return bookReviewsDTOs; 
         }
     }
 }

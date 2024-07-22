@@ -3,13 +3,16 @@ using System.Text.Json.Serialization;
 
 namespace WebApp.DTOs
 {
-    public class BookReviewDTO
+    public class ReviewReturnedDTO
     {
-
-        [JsonPropertyName("reviewscore")]
-        [Required]
+        // this DTO is used only to return data to the UI
         public float ReviewScore { get; set; }
 
         public string ReviewText { get; set; }
+
+        public string ISBN { get; set; }
+
+        public string Title { get; set; }
+
     }
 }
