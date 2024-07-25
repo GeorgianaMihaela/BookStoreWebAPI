@@ -1,9 +1,10 @@
 ﻿using BusinessLogic.Books;
 using WebApp.DTOs;
+using WebApp.Mappers;
 
-namespace WebAPIsNoDB.Mappers
+namespace WebApp.Mappers
 {
-    public class BookMapper
+    public class BookMapper : IBookMapper
     {
         public List<BookDTO> GetBooksDTOList(List<Book> books)
         {

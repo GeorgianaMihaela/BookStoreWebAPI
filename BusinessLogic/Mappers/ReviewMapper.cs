@@ -1,6 +1,5 @@
 ﻿using BusinessLogic.Books;
 using DataAccess.DataModels;
-using DataAccess.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Mappers
 {
-    public class ReviewMapper
+    public class ReviewMapper : IReviewMapper
     {
         public SqlBookReview MapBookReviewToSqlBookReview(BookReview bookReview)
         {

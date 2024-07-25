@@ -14,18 +14,18 @@ namespace DataAccess.DBStorage
         private SqlConnection connection;
         private static SQLConnectionService sqlConnectionService;
 
-        private SQLConnectionService()
+        private SQLConnectionService(string connString)
         {
-            connection = new SqlConnection("Server=localhost\\SQLEXPRESS;Database=BookStore;Trusted_Connection=true;TrustServerCertificate=true");
+            connection = new SqlConnection(connString);
             connection.Open(); 
 
         }
 
-        public static SQLConnectionService GetService()
+        public static SQLConnectionService GetService(string connString)
         {
             if (sqlConnectionService == null)
             {
-                sqlConnectionService = new SQLConnectionService();
+                sqlConnectionService = new SQLConnectionService(connString);
             }
 
             return sqlConnectionService;

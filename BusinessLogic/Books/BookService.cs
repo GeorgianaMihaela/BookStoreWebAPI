@@ -1,8 +1,7 @@
-﻿using BusinessLogic.DBStorage;
+﻿
 using BusinessLogic.Mappers;
 using DataAccess.DataModels;
 using DataAccess.DBStorage;
-using DataAccess.DTOs;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -15,14 +14,22 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Books
 {
-    public class BookService
+    public class BookService : IBookService
     {
-        private SQLBooksStorageService sqlBooksStorageService = new SQLBooksStorageService();
-        private SQLReviewsStorageService sqlReviewsStorageService = new SQLReviewsStorageService();
+        private ISQLBooksStorageService sqlBooksStorageService;
+        private ISQLReviewsStorageService sqlReviewsStorageService; 
 
-        private BookMapper bookMapper = new BookMapper();
-        private ReviewMapper reviewMapper = new ReviewMapper();
+        private IBookMapper bookMapper;
+        private IReviewMapper reviewMapper;
 
+        public BookService(ISQLBooksStorageService sqlBooksStorageService, ISQLReviewsStorageService sqlReviewsStorageService, IBookMapper bookMapper, IReviewMapper reviewMapper)
+        {
+            this.sqlBooksStorageService = sqlBooksStorageService; 
+            this.sqlReviewsStorageService = sqlReviewsStorageService;
+
+            this.bookMapper = bookMapper;
+            this.reviewMapper = reviewMapper;
+        }
         public Book InsertBook(Book book)
         {
             
@@ -71,7 +78,7 @@ namespace BusinessLogic.Books
             
         }
 
-        private SQLBook GetSqlBookByISBN(string isbn)
+        public SQLBook GetSqlBookByISBN(string isbn)
         {
             return sqlBooksStorageService.GetBookByISBN(isbn);
         }

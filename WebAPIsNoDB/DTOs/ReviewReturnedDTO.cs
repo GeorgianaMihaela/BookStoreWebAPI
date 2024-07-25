@@ -5,7 +5,7 @@ namespace WebApp.DTOs
 {
     public class ReviewReturnedDTO
     {
-        // this DTO is used only to return data to the UI
+        // this DTO is used only to return data to the UI, thus, it does not need validation
         public float ReviewScore { get; set; }
 
         public string ReviewText { get; set; }

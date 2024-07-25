@@ -8,6 +8,7 @@ namespace WebApp.DTOs
 
         [JsonPropertyName("reviewscore")]
         [Required]
+        [Range(0, 100, ErrorMessage = "Review score must be between 0 and 100")]
         public float ReviewScore { get; set; }
 
         public string ReviewText { get; set; }

@@ -1,19 +1,25 @@
 ﻿using BusinessLogic.Books;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using WebAPIsNoDB.Mappers;
+using WebApp.Mappers;
 using WebApp.DTOs;
 using static System.Reflection.Metadata.BlobBuilder;
 
 
-namespace WebAPIsNoDB.Controllers
+namespace WebApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class BooksController : ControllerBase
     {
-        private BookService bookService = new BookService();
-        private BookMapper bookMapper = new BookMapper();
+        private IBookService bookService; 
+        private IBookMapper bookMapper;
+
+        public BooksController(IBookMapper bookMapper, IBookService bookService)
+        {
+            this.bookService = bookService;
+            this.bookMapper = bookMapper;
+        }
 
         [HttpGet]
         public List<BookDTO> Get()
@@ -89,9 +95,9 @@ namespace WebAPIsNoDB.Controllers
         [Route("{isbn}/reviews")]
         public List<ReviewReturnedDTO> GetReviews([FromRoute] string isbn)
         {
-           List<BookCompositeReview> bookReviews = bookService.GetReviewsByISBN(isbn);
+            List<BookCompositeReview> bookReviews = bookService.GetReviewsByISBN(isbn);
 
-           List<ReviewReturnedDTO> bookReviewDTOs = bookMapper.ConvertBookReviewsToReviewsDTO(bookReviews); 
+            List<ReviewReturnedDTO> bookReviewDTOs = bookMapper.ConvertBookReviewsToReviewsDTO(bookReviews);
 
             return bookReviewDTOs;
         }

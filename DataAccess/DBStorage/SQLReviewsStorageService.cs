@@ -1,5 +1,4 @@
 ﻿using DataAccess.DataModels;
-using DataAccess.DTOs;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -13,11 +12,14 @@ namespace DataAccess.DBStorage
     // if the FK constraint is not met, SQL exception is thrown 
     // then when this happens, custom KeyNotFoundException is thrown
     // The compositeBookReview for which you try adding the review does not exist
-    public class SQLReviewsStorageService
+    public class SQLReviewsStorageService : ISQLReviewsStorageService
     {
-        private SqlConnection sqlConn = SQLConnectionService.GetService().Connection;
+        private SqlConnection sqlConn; 
 
-
+        public SQLReviewsStorageService(string connString)
+        {
+            sqlConn = SQLConnectionService.GetService(connString).Connection;
+        }
         public void InserBookReview(string isbn, SqlBookReview sqlBookReview)
         {
             string query = $"INSERT INTO BookReviews(isbn, reviewscore, reviewtext)" +

@@ -1,5 +1,5 @@
-﻿using DataAccess.DBStorage;
-using DataAccess.DTOs;
+﻿
+using DataAccess.DataModels;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -9,12 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Reflection.Metadata.BlobBuilder;
 
-namespace BusinessLogic.DBStorage
+namespace DataAccess.DBStorage
 {
-    public class SQLBooksStorageService
+    public class SQLBooksStorageService : ISQLBooksStorageService
     {
-        private SqlConnection sqlConn = SQLConnectionService.GetService().Connection;
+        private SqlConnection sqlConn; 
 
+        public SQLBooksStorageService(string connString)
+        {
+            sqlConn = SQLConnectionService.GetService(connString).Connection;
+        }
         public List<SQLBook> GetAllBooks()
         {
             List<SQLBook> books = new List<SQLBook>();

@@ -1,5 +1,5 @@
 ﻿using BusinessLogic.Books;
-using DataAccess.DTOs;
+using DataAccess.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Mappers
 {
-    public class BookMapper
+    public class BookMapper : IBookMapper
     {
         public SQLBook MapBookToSQLBook(Book book)
         {
